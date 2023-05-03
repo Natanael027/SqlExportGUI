@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="tesGUI:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/tesGUI_jar</output-path>
+    <root id="archive" name="tesGUI.jar">
+      <element id="module-output" name="tesGUI" />
+    </root>
+  </artifact>
+</component>
