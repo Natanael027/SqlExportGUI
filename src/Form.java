@@ -35,7 +35,7 @@ public class Form {
                 }
                 System.out.println("type : "+ pr);
 
-                List<String> list = new ArrayList<String>(Arrays.asList(textArea1.getText().split(", ")));
+                List<String> list = new ArrayList<String>(Arrays.asList(textArea1.getText().split(",")));
 
                 try {
                     ExporterService service = new ExporterService();
