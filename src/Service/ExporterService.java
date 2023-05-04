@@ -20,7 +20,10 @@ public class ExporterService {
     public ExporterService() {
     }
 
-    private String table(String q){
+    private String table(String q, String operator){
+        if (operator == null || operator.isEmpty()) {
+            operator = "operator";
+        }
         String insert = "";
         switch (q){
             case "CCA" :
@@ -28,7 +31,7 @@ public class ExporterService {
                 break;
 
             case "CSA" :
-                insert = "INSERT INTO `messagemt_operator` (`messageid`, `campaignid`, `userid`, `original`, `sendto`, `messagetype`, `message`, `ston`, `snpi`, `dton`, `dnpi`, `dcs`, `udhl`, `destport`, `origport`, `refnum`, `segseq`, `totseg`, `ispush`, `replyto`, `keyword`, `receivedate`, `sentdate`, `sentstatus`, `delivereddate`, `deliveredstatus`, `status`, `priority`, `startdate`, `enddate`, `oprid`, `fromcp`, `fromchannel`, `tochannel`, `thirdid`, `jenis`, `smsprice`, `prefix_code`, `date_10`, `date_20`, `date_30`, `date_90`) VALUES ";
+                insert = "INSERT INTO `messagemt_"+operator+"` (`messageid`, `campaignid`, `userid`, `original`, `sendto`, `messagetype`, `message`, `ston`, `snpi`, `dton`, `dnpi`, `dcs`, `udhl`, `destport`, `origport`, `refnum`, `segseq`, `totseg`, `ispush`, `replyto`, `keyword`, `receivedate`, `sentdate`, `sentstatus`, `delivereddate`, `deliveredstatus`, `status`, `priority`, `startdate`, `enddate`, `oprid`, `fromcp`, `fromchannel`, `tochannel`, `thirdid`, `jenis`, `smsprice`, `prefix_code`, `date_10`, `date_20`, `date_30`, `date_90`) VALUES ";
                 break;
 
             case "TR" :
@@ -80,7 +83,6 @@ public class ExporterService {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd_HH-mm-ss");
         String timestamp = dateFormat.format(new Date());
 
-        String insert = table(type);
 
         fileSql = new File( "SqlExport_"+timestamp+".sql");
         writer = new FileWriter(fileSql);
@@ -98,9 +100,10 @@ public class ExporterService {
             String satu = "',\t0,\t'checkNumber',\t'whatsapp',\t'";
             String tiga = "',\t0,\t'Selamat Siang',\t0,\t0,\t0,\t0,\t0,\t0,\t0,\t0,\t0,\t0,\t1,\t1,\tNULL,\tNULL,\tNOW(),\tNULL,\tNULL,\tNULL,\tNULL,\t0,\t5,\tNOW(),\tNOW(),\t0,\t0,\t'',\t'',\tNULL,\t4,\t0,\t'";
 
-//            String empat = prefixToNetworkCode.get(Integer.valueOf(dua.substring(0, 5)));
+            String op = prefixToNetworkCode.get(Integer.valueOf(dua.substring(0, 5)));
 
             String empat = prefix(type);
+            String insert = table(type,op);
 
             String lima = "',\tNULL,\tNULL,\tNULL,\tNULL)";
 
