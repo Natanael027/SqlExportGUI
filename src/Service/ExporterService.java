@@ -27,15 +27,15 @@ public class ExporterService {
         String insert = "";
         switch (q){
             case "CCA" :
-                insert = "INSERT INTO `messagemt_tm_cn` (`messageid`, `campaignid`, `userid`, `original`, `sendto`, `messagetype`, `message`, `ston`, `snpi`, `dton`, `dnpi`, `dcs`, `udhl`, `destport`, `origport`, `refnum`, `segseq`, `totseg`, `ispush`, `replyto`, `keyword`, `receivedate`, `sentdate`, `sentstatus`, `delivereddate`, `deliveredstatus`, `status`, `priority`, `startdate`, `enddate`, `oprid`, `fromcp`, `fromchannel`, `tochannel`, `thirdid`, `jenis`, `smsprice`, `prefix_code`, `date_10`, `date_20`, `date_30`, `date_90`) VALUES ";
+                insert = "INSERT INTO `messagemt_tm_cn` (`messageid`, `campaignid`, `userid`, `original`, `sendto`, `messagetype`, `message`, `ston`, `snpi`, `dton`, `dnpi`, `dcs`, `udhl`, `destport`, `origport`, `refnum`, `segseq`, `totseg`, `ispush`, `replyto`, `keyword`, `receivedate`, `sentdate`, `sentstatus`, `delivereddate`, `deliveredstatus`, `status`, `priority`, `startdate`, `enddate`, `oprid`, `fromcp`, `fromchannel`, `tochannel`, `thirdid`, `jenis`, `smsprice`, `prefix_code`, `date_10`, `date_20`, `date_30`, `date_90`) VALUES \n";
                 break;
 
             case "CSA" :
-                insert = "INSERT INTO `messagemt_"+operator+"` (`messageid`, `campaignid`, `userid`, `original`, `sendto`, `messagetype`, `message`, `ston`, `snpi`, `dton`, `dnpi`, `dcs`, `udhl`, `destport`, `origport`, `refnum`, `segseq`, `totseg`, `ispush`, `replyto`, `keyword`, `receivedate`, `sentdate`, `sentstatus`, `delivereddate`, `deliveredstatus`, `status`, `priority`, `startdate`, `enddate`, `oprid`, `fromcp`, `fromchannel`, `tochannel`, `thirdid`, `jenis`, `smsprice`, `prefix_code`, `date_10`, `date_20`, `date_30`, `date_90`) VALUES ";
+                insert = "INSERT INTO `messagemt_"+operator+"` (`messageid`, `campaignid`, `userid`, `original`, `sendto`, `messagetype`, `message`, `ston`, `snpi`, `dton`, `dnpi`, `dcs`, `udhl`, `destport`, `origport`, `refnum`, `segseq`, `totseg`, `ispush`, `replyto`, `keyword`, `receivedate`, `sentdate`, `sentstatus`, `delivereddate`, `deliveredstatus`, `status`, `priority`, `startdate`, `enddate`, `oprid`, `fromcp`, `fromchannel`, `tochannel`, `thirdid`, `jenis`, `smsprice`, `prefix_code`, `date_10`, `date_20`, `date_30`, `date_90`) VALUES \n";
                 break;
 
             case "TR" :
-                insert = "INSERT INTO `messagemt_cn_tr` (`messageid`, `campaignid`, `userid`, `original`, `sendto`, `messagetype`, `message`, `ston`, `snpi`, `dton`, `dnpi`, `dcs`, `udhl`, `destport`, `origport`, `refnum`, `segseq`, `totseg`, `ispush`, `replyto`, `keyword`, `receivedate`, `sentdate`, `sentstatus`, `delivereddate`, `deliveredstatus`, `status`, `priority`, `startdate`, `enddate`, `oprid`, `fromcp`, `fromchannel`, `tochannel`, `thirdid`, `jenis`, `smsprice`, `prefix_code`, `date_10`, `date_20`, `date_30`, `date_90`) VALUES ";
+                insert = "INSERT INTO `messagemt_cn_tr` (`messageid`, `campaignid`, `userid`, `original`, `sendto`, `messagetype`, `message`, `ston`, `snpi`, `dton`, `dnpi`, `dcs`, `udhl`, `destport`, `origport`, `refnum`, `segseq`, `totseg`, `ispush`, `replyto`, `keyword`, `receivedate`, `sentdate`, `sentstatus`, `delivereddate`, `deliveredstatus`, `status`, `priority`, `startdate`, `enddate`, `oprid`, `fromcp`, `fromchannel`, `tochannel`, `thirdid`, `jenis`, `smsprice`, `prefix_code`, `date_10`, `date_20`, `date_30`, `date_90`) VALUES \n";
                 break;
         }
         return insert;
@@ -100,10 +100,11 @@ public class ExporterService {
             String satu = "',\t0,\t'checkNumber',\t'whatsapp',\t'";
             String tiga = "',\t0,\t'Selamat Siang',\t0,\t0,\t0,\t0,\t0,\t0,\t0,\t0,\t0,\t0,\t1,\t1,\tNULL,\tNULL,\tNOW(),\tNULL,\tNULL,\tNULL,\tNULL,\t0,\t5,\tNOW(),\tNOW(),\t0,\t0,\t'',\t'',\tNULL,\t4,\t0,\t'";
 
-            String op = prefixToNetworkCode.get(Integer.valueOf(dua.substring(0, 5)));
+            String zero = (i != 0) ? number.get(i-1) : number.get(i);
+            String op = prefixToNetworkCode.get(Integer.valueOf(zero.substring(0, 5)));
 
             String empat = prefix(type);
-            String insert = table(type,op);
+            String insert = table(type,prefix);
 
             String lima = "',\tNULL,\tNULL,\tNULL,\tNULL)";
 
@@ -121,8 +122,14 @@ public class ExporterService {
                 writer.write(query);
 
             } else {
-                writer.append(",");
-                writer.write(query);
+                if (prefix != op && type.equalsIgnoreCase("CSA")){
+                    writer.append(";\n\n");
+                    writer.write(insert);
+                    writer.write(query);
+                }else {
+                    writer.append(",\n");
+                    writer.write(query);
+                }
             }
         }
         writer.append(";");
